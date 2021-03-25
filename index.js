@@ -22,7 +22,7 @@ client.connect(err => {
 
   // get method (data come from database)
   app.get('/products', (req, res) =>{
-    collection.find({}).limit(3)
+    collection.find({}).limit(10)
     .toArray((err, documents) => {
       res.send(documents);
     })
@@ -41,8 +41,7 @@ client.connect(err => {
     console.log(product);
     collection.insertOne(product)
     .then(result => {
-      console.log('one product added');
-      res.send('success')
+      res.redirect('/');
     })
   })
 
@@ -51,8 +50,8 @@ client.connect(err => {
     collection.updateOne({_id: ObjectId(req.params.id)},{
       $set: {price: req.body.price, quantity: req.body.quantity}
     })
-    .then(res => {
-      console.log('success');
+    .then(result => {
+      res.send(result.modifiedCount > 0);
     })
   })
 
@@ -61,7 +60,7 @@ client.connect(err => {
 app.delete('/delete/:id', (req, res) => {
   collection.deleteOne({_id: ObjectId(req.params.id)})
   .then((result) => {
-    console.log(result);
+    res.send(result.deletedCount > 0);
   })
 })
 });

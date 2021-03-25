@@ -25,13 +25,13 @@
             fetch('http://localhost:3000/products')
                 .then(res => res.json())
                 .then(products => {
-                    console.log(products)
                     const container = document.getElementById('products');
+                    container.innerHTML = '';
                     products.forEach(pd => {
                         const p  = document.createElement('p');
                         p.innerHTML = `name: ${pd.name} price: ${pd.price} quantity: ${pd.quantity}
                         <button onclick="loadProduct('${pd._id}')">update</button>
-                        <button onclick="deleteProduct('${pd._id}')">delete</button>`;
+                        <button onclick="deleteProduct(event,'${pd._id}')">delete</button>`;
                         container.appendChild(p);
                     })
                 })
@@ -64,19 +64,24 @@
                 })
                 .then(res => res.json())
                 .then(data => {
-                    console.log('updating')
+                    loadAllProduct();
+                    const update = document.getElementById('update');
+                    update.innerHTML = '';
                 })
 
             }
 
             // delete product from database
-            function deleteProduct(id){
+            function deleteProduct(event,id){
+                console.log(event.target)
                 fetch(`/delete/${id}`, {
                     method: 'DELETE'
                 })
                 .then(res => res.json())
                 .then(result  => {
-                    console.log('delete successfully')
+                    if(result){
+                        event.target.parentNode.style.display = 'none';
+                    }
                 })
             }
     </script>
