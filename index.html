@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>node mongo crud</title>
+</head>
+<body>
+    <h3>I am umar faruk</h3>
+    <form action="/addProduct" method="post">
+        <input type="text" placeholder="name" name='name'> <br>
+        <input type="text" placeholder="price" name='price'><br>
+        <input type="text" placeholder="quantity" name='quantity'><br>
+        <button type="submit">Add product</button>
+    </form>
+
+    <div id="products">
+
+    </div>
+
+    <script>
+        function loadProduct(){
+            fetch('http://localhost:3000/products')
+                .then(res => res.json())
+                .then(products => {
+                    console.log(products)
+                    const container = document.getElementById('products');
+                    products.forEach(pd => {
+                        const p  = document.createElement('p');
+                        p.innerHTML = `name: ${pd.name} price: ${pd.price} quantity: ${pd.kg}`;
+                        container.appendChild(p);
+                    })
+                })
+            }
+            loadProduct();
+    </script>
+</body>
+</html>
